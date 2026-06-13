@@ -31,6 +31,24 @@ local DeviceScreen = Device.screen
 -- CrosswordScreen
 -- ---------------------------------------------------------------------------
 
+local GAME_RULES_EN = _([[
+Crossword — Rules
+
+Fill the white squares with letters to form words that answer the given clues.
+
+Across clues fill cells from left to right.
+Down clues fill cells from top to bottom.
+Letters at intersections must match both the across word and the down word.
+
+Tap a cell to select it and display its clue. Tap again to switch between across and down. Use the keyboard to type letters. Tap Erase or press ⌫ to clear a cell.
+]])
+
+local GAME_RULES_FR = [[
+Mots Croisés — Règles
+
+Remplissez les cases blanches avec des lettres pour répondre aux définitions horizontales et verticales. Les lettres aux intersections doivent satisfaire les deux mots. Appuyez sur une case pour la sélectionner ; appuyez à nouveau pour basculer entre horizontal et vertical.
+]]
+
 local CrosswordScreen = ScreenBase:extend{}
 
 local KEY_ROWS = {
@@ -74,6 +92,7 @@ function CrosswordScreen:buildLayout()
             { text = "\xe2\x96\xb6", callback = function() self:onNextPuzzle() end },
             { id = "dir_btn", text = self:_dirLabel(),
               callback = function() self:toggleDirection() end },
+            self:makeRulesButtonConfig(GAME_RULES_EN, GAME_RULES_FR),
             self:makeCloseButtonConfig(),
         }},
     }
