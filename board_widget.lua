@@ -119,7 +119,7 @@ function CrosswordBoardWidget:paintTo(bb, x, y)
                 if usr and usr ~= "" and usr ~= "#" then
                     local m = RenderText:sizeUtf8Text(0, cell, self.letter_face, usr, true, false)
                     local tx = cx + math.floor((cell - m.x) / 2)
-                    local ty = cy + math.floor((cell - (m.y_bottom - m.y_top)) / 2) + m.y_top
+                    local ty = cy + math.floor((cell + m.y_top - m.y_bottom) / 2)
                     RenderText:renderUtf8Text(bb, tx, ty, self.letter_face, usr, true, false, C_FG)
                 end
 
