@@ -44,10 +44,10 @@ function CrosswordBoardWidget:init()
     local ns = math.max(5, math.floor(cell * 0.28))
     self.num_face = Font:getFace("smallinfofont", ns)
 
-    self.paint_rect = nil
+    self.paint_rect = Geom:new{ x = 0, y = 0, w = self.w, h = self.h }
 
     self.ges_events = {
-        CellTap = { GestureRange:new{ ges = "tap", range = self.dimen } },
+        CellTap = { GestureRange:new{ ges = "tap", range = function() return self.paint_rect end } },
     }
 end
 
