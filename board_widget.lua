@@ -26,7 +26,7 @@ local CrosswordBoardWidget = InputContainer:extend{
     board      = nil,
     max_width  = 0,
     max_height = 0,
-    onCellTap  = nil,
+    cellTapCallback = nil,
     wrong_cells = nil,   -- optional: {r}{c} = bool
 }
 
@@ -60,7 +60,7 @@ function CrosswordBoardWidget:onCellTap(ges)
     local r = math.floor(ly / self.cell) + 1
     local board = self.board
     if r >= 1 and r <= board.rows and c >= 1 and c <= board.cols then
-        if self.onCellTap then self.onCellTap(r, c) end
+        if self.cellTapCallback then self.cellTapCallback(r, c) end
     end
     return true
 end
