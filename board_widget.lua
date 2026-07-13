@@ -51,7 +51,7 @@ function CrosswordBoardWidget:init()
     }
 end
 
-function CrosswordBoardWidget:onCellTap(ges)
+function CrosswordBoardWidget:onCellTap(_, ges)
     if not self.paint_rect then return end
     local lx = ges.pos.x - self.paint_rect.x
     local ly = ges.pos.y - self.paint_rect.y
