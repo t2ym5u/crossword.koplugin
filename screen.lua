@@ -81,8 +81,15 @@ function CrosswordScreen:buildLayout()
         and math.max(math.floor(sw * 0.38), 120)
         or  math.floor(sw * 0.9)
 
-    -- Top bar
-    local top_buttons = ButtonTable:new{
+    -- Title bar with Options menu
+    local title_bar = self:buildTitleBar(_("Crossword"), function()
+        return {
+            self:makeRulesButtonConfig(GAME_RULES_EN, GAME_RULES_FR),
+        }
+    end)
+
+    -- Puzzle navigation row (kept in the footer)
+    local nav_buttons = ButtonTable:new{
         shrink_unneeded_width = true,
         width   = btn_width,
         buttons = {{
@@ -92,12 +99,10 @@ function CrosswordScreen:buildLayout()
             { text = "\xe2\x96\xb6", callback = function() self:onNextPuzzle() end },
             { id = "dir_btn", text = self:_dirLabel(),
               callback = function() self:toggleDirection() end },
-            self:makeRulesButtonConfig(GAME_RULES_EN, GAME_RULES_FR),
-            self:makeCloseButtonConfig(),
         }},
     }
-    self.puzzle_btn = top_buttons:getButtonById("puzzle_btn")
-    self.dir_btn    = top_buttons:getButtonById("dir_btn")
+    self.puzzle_btn = nav_buttons:getButtonById("puzzle_btn")
+    self.dir_btn    = nav_buttons:getButtonById("dir_btn")
 
     -- Board widget
     local board_max
@@ -162,7 +167,7 @@ function CrosswordScreen:buildLayout()
     if is_landscape then
         local right = VerticalGroup:new{
             align = "center",
-            top_buttons,
+            nav_buttons,
             VerticalSpan:new{ width = Size.span.vertical_large },
             self.clue_widget,
             VerticalSpan:new{ width = Size.span.vertical_large },
@@ -172,12 +177,13 @@ function CrosswordScreen:buildLayout()
             VerticalSpan:new{ width = Size.span.vertical_large },
             self.status_text,
         }
-        self.layout = HorizontalGroup:new{
+        local content = HorizontalGroup:new{
             align  = "center",
             board_frame,
             HorizontalSpan:new{ width = Size.span.horizontal_default },
             right,
         }
+        self:buildLandscapeLayout(title_bar, content)
     else
         local content = VerticalGroup:new{
             align = "center",
@@ -187,15 +193,16 @@ function CrosswordScreen:buildLayout()
         }
         local footer = VerticalGroup:new{
             align = "center",
+            nav_buttons,
+            VerticalSpan:new{ width = Size.span.vertical_large },
             self.keyboard_widget,
             VerticalSpan:new{ width = Size.span.vertical_large },
             action_buttons,
             VerticalSpan:new{ width = Size.span.vertical_large },
             self.status_text,
         }
-        self:buildPortraitLayout(top_buttons, content, footer)
+        self:buildPortraitLayout(title_bar, content, footer)
     end
-    self[1] = self.layout
     self:updateStatus()
 end
 
